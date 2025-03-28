@@ -97,7 +97,7 @@ elif option == "Visualizations":
     
     text = ' '.join(df['verified_reviews'].dropna().astype(str))
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
-    st.write("### Wordcloud"
+    st.write("### Wordcloud")
     plt.figure(figsize=(10, 10))
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis('off')
