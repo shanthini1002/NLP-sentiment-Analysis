@@ -166,15 +166,17 @@ elif option == "Predict Sentiment":
         model = models["Random Forest"]  # Default model
         prediction = model.predict(vectorizer.transform([user_input]))
         
-        if prediction[0] == 1:
-            sentiment = "Positive"
-        else:
-            sentiment = "Negative"
+        # Check if the prediction is a probability instead of a class label
+        if isinstance(prediction[0], float):  # In case prediction is a probability
+            if prediction[0] > 0.5:  # Adjust the threshold as needed
+                sentiment = "Positive"
+            else:
+                sentiment = "Negative"
+        else:  # If the prediction is a class label (0 or 1)
+            if prediction[0] == 1:
+                sentiment = "Positive"
+            else:
+                sentiment = "Negative"
         
-        
-        if sentiment == "Positive":
-            st.write(f"The sentiment is Positive! Great job!")
-        else:
-            st.write(f"The sentiment is Negative. Try again!")
-
         st.write(f"Predicted Sentiment: {sentiment}")
+
