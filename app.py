@@ -42,13 +42,11 @@ if option == "Load Dataset":
     st.title("Load Dataset")
     st.write(df)
     st.write("Dataset Loaded Successfully!")
-    st.write(df.head())
+    
 
 # EDA Section
 elif option == "EDA":
     st.title("Exploratory Data Analysis")
-    if df is None:
-        df = load_data()
     st.write(df.head())
     st.write(df.describe())
     st.write(df.info())
@@ -57,8 +55,6 @@ elif option == "EDA":
 # Data Preprocessing
 elif option == "Data Preprocessing":
     st.title("Data Preprocessing")
-    if df is None:
-        df = load_data()
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()
     
@@ -78,8 +74,7 @@ elif option == "Data Preprocessing":
 # Visualization
 elif option == "Visualizations":
     st.title("Data Visualization")
-    if df is None:
-        df = load_data()
+    
     
     text = ' '.join(df['verified_reviews'].dropna().astype(str))
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
@@ -100,8 +95,6 @@ elif option == "Visualizations":
 # Model Training & Evaluation
 elif option == "Model Training & Evaluation":
     st.title("Model Training & Evaluation")
-    if df is None:
-        df = load_data()
     vectorizer = TfidfVectorizer()
     X = vectorizer.fit_transform(df['cleaned_reviews'])
     y = df['sentiment']
