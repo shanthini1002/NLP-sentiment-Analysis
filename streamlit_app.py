@@ -145,8 +145,16 @@ elif option == "Predict Sentiment":
     if st.button("Analyze"):
         model = models["Random Forest"]  # Default model
         prediction = model.predict(vectorizer.transform([user_input]))
-         if prediction[0] == 1 :
+        
+        if prediction[0] == 1:
             sentiment = "Positive"
-         else :
+        else:
             sentiment = "Negative"
+        
+        
+        if sentiment == "Positive":
+            st.write(f"The sentiment is Positive! Great job!")
+        else:
+            st.write(f"The sentiment is Negative. Try again!")
+
         st.write(f"Predicted Sentiment: {sentiment}")
