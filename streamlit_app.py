@@ -106,6 +106,16 @@ elif option == "Visualizations":
 # Model Training & Evaluation
 elif option == "Model Training & Evaluation":
     st.title("Model Training & Evaluation")
+    def preprocess_text(text):
+        if pd.isnull(text) or not isinstance(text, str):
+            return ''
+        text = text.lower()
+        text = re.sub(r'[^a-z\s]', '', text)
+        words = text.split()
+        words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
+        return ' '.join(words)
+    
+    df['cleaned_reviews'] = df['verified_reviews'].fillna('').apply(preprocess_text)
     vectorizer = TfidfVectorizer()
     X = vectorizer.fit_transform(df['cleaned_reviews'])
     y = df['sentiment']
