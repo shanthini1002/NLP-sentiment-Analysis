@@ -163,7 +163,7 @@ elif option == "Predict Sentiment":
     st.title("Predict Sentiment")
     user_input = st.text_area("Enter text to analyze sentiment:")
     if st.button("Analyze"):
-        model = models["Random Forest"]  # Default model
+        model = models["SVM"]  # Default model
         prediction = model.predict(vectorizer.transform([user_input]))
         
         # Check if the prediction is a probability instead of a class label
