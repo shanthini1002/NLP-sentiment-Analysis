@@ -148,9 +148,9 @@ elif option == "Model Training & Evaluation":
         y_pred = model.predict(X_test)
         acc = accuracy_score(y_test, y_pred)
         accuracies[name] = acc
-    st.write(f"**{name}**")
-    st.write(f"**Accuracy:** {acc:.2f}")
-    st.text("Classification Report:\n" + classification_report(y_test, y_pred))
+        st.write(f"**{name}**")
+        st.write(f"**Accuracy:** {acc:.2f}")
+        st.text("Classification Report:\n" + classification_report(y_test, y_pred))
     
     st.write("### Model Accuracy Comparison")
     plt.figure(figsize=(8, 5))
