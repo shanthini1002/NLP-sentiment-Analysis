@@ -35,18 +35,7 @@ if uploaded_file is not None:
 # Load dataset
     df['date'] = pd.to_datetime(df['date'])
     df['sentiment'] = df['rating'].apply(lambda x: 1 if x >= 4 else 0)
-    def preprocess_text(text):
-        if pd.isnull(text) or not isinstance(text, str):
-            return ''
-        text = text.lower()
-        text = re.sub(r'[^a-z\s]', '', text)
-        words = text.split()
-        words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
-        return ' '.join(words)
     
-    df['cleaned_reviews'] = df['verified_reviews'].fillna('').apply(preprocess_text)
-    
-
 
 if option == "Load Dataset":
     st.title("Load Dataset")
@@ -72,6 +61,16 @@ elif option == "Data Preprocessing":
     st.title("Data Preprocessing")
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()
+    def preprocess_text(text):
+        if pd.isnull(text) or not isinstance(text, str):
+            return ''
+        text = text.lower()
+        text = re.sub(r'[^a-z\s]', '', text)
+        words = text.split()
+        words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
+        return ' '.join(words)
+    
+    df['cleaned_reviews'] = df['verified_reviews'].fillna('').apply(preprocess_text)
     st.write("Text Preprocessing Completed")
     st.write(df[['verified_reviews', 'cleaned_reviews']].head())
 
