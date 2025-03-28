@@ -35,6 +35,7 @@ if uploaded_file is not None:
 # Load dataset
     df['date'] = pd.to_datetime(df['date'])
     df['sentiment'] = df['rating'].apply(lambda x: 1 if x >= 4 else 0)
+# data preprocessing
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()
     def preprocess_text(text):
@@ -47,6 +48,7 @@ if uploaded_file is not None:
         return ' '.join(words)
     
     df['cleaned_reviews'] = df['verified_reviews'].fillna('').apply(preprocess_text)
+# model building and evaluation
     vectorizer = TfidfVectorizer()
     X = vectorizer.fit_transform(df['cleaned_reviews'])
     y = df['sentiment']
@@ -91,18 +93,6 @@ elif option == "EDA":
 # Data Preprocessing
 elif option == "Data Preprocessing":
     st.title("Data Preprocessing")
-    stop_words = set(stopwords.words('english'))
-    lemmatizer = WordNetLemmatizer()
-    def preprocess_text(text):
-        if pd.isnull(text) or not isinstance(text, str):
-            return ''
-        text = text.lower()
-        text = re.sub(r'[^a-z\s]', '', text)
-        words = text.split()
-        words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
-        return ' '.join(words)
-    
-    df['cleaned_reviews'] = df['verified_reviews'].fillna('').apply(preprocess_text)
     st.write("Text Preprocessing Completed")
     st.write(df[['verified_reviews', 'cleaned_reviews']].head())
 
@@ -138,29 +128,9 @@ elif option == "Visualizations":
 # Model Training & Evaluation
 elif option == "Model Training & Evaluation":
     st.title("Model Training & Evaluation")
-    vectorizer = TfidfVectorizer()
-    X = vectorizer.fit_transform(df['cleaned_reviews'])
-    y = df['sentiment']
-    
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    models = {
-        "Naïve Bayes": MultinomialNB(),
-        "Logistic Regression": LogisticRegression(),
-        "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
-        "Gradient Boosting": GradientBoostingClassifier(n_estimators=100, random_state=42),
-        "SVM": SVC(kernel='linear')
-    }
-    
-    accuracies = {}
-    for name, model in models.items():
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
-        accuracies[name] = acc
-        st.write(f"**{name}**")
-        st.write(f"**Accuracy:** {acc:.2f}")
-        st.text("Classification Report:\n" + classification_report(y_test, y_pred))
+    st.write(f"**{name}**")
+    st.write(f"**Accuracy:** {acc:.2f}")
+    st.text("Classification Report:\n" + classification_report(y_test, y_pred))
     
     st.write("### Model Accuracy Comparison")
     plt.figure(figsize=(8, 5))
@@ -175,5 +145,8 @@ elif option == "Predict Sentiment":
     if st.button("Analyze"):
         model = models["Random Forest"]  # Default model
         prediction = model.predict(vectorizer.transform([user_input]))
-        sentiment = "Positive" if prediction[0] == 1 else "Negative"
+         if prediction[0] == 1 :
+            sentiment = "Positive"
+         else :
+            sentiment = "Negative"
         st.write(f"Predicted Sentiment: {sentiment}")
