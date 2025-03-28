@@ -47,10 +47,14 @@ if option == "Load Dataset":
 # EDA Section
 elif option == "EDA":
     st.title("Exploratory Data Analysis")
-    st.write("### Data Info")
-    st.write(data.info())
     st.write("### First 5 rows")
-    st.write(data.head())
+    st.write(df.head())
+    st.write("### Data Info")
+    st.write(df.info())
+    st.write("### Number of rows and columns")
+    st.write(df.shape)
+    st.write("### Data types")
+    st.write(df.dtypes)
     st.write("### Checking for missing values")
     st.write(data.isnull().sum())
 # Data Preprocessing
