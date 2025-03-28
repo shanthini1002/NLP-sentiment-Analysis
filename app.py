@@ -31,7 +31,7 @@ df = None
 
 # Sidebar Navigation
 st.sidebar.title("Sentiment Analysis App")
-option = st.sidebar.radio("Select Section:", ["Load Dataset", "EDA", "Data Preprocessing", "Visualizations", "Model Training & Evaluation"])
+option = st.sidebar.radio("Select Section:", ["Load Dataset", "EDA", "Data Preprocessing", "Visualizations", "Model Training & Evaluation","Predict Sentiment"])
 
 # Load Dataset Section
 if option == "Load Dataset":
@@ -126,3 +126,12 @@ elif option == "Model Training & Evaluation":
     plt.ylabel('Accuracy')
     plt.title('Comparison of Model Accuracies')
     st.pyplot(plt)
+# Sentiment Prediction
+elif section == "Predict Sentiment":
+    st.title("Predict Sentiment")
+    user_input = st.text_area("Enter text to analyze sentiment:")
+    if st.button("Analyze"):
+        model = models["Logistic Regression"]  # Default model
+        prediction = model.predict(vectorizer.transform([user_input]))
+        sentiment = "Positive" if prediction[0] == 1 else "Negative"
+        st.write(f"Predicted Sentiment: {sentiment}")
