@@ -56,7 +56,7 @@ elif option == "EDA":
     st.write("### Data types")
     st.write(df.dtypes)
     st.write("### Checking for missing values")
-    st.write(data.isnull().sum())
+    st.write(df.isnull().sum())
 # Data Preprocessing
 elif option == "Data Preprocessing":
     st.title("Data Preprocessing")
