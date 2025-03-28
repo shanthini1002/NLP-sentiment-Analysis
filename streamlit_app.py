@@ -106,6 +106,8 @@ elif option == "Visualizations":
 # Model Training & Evaluation
 elif option == "Model Training & Evaluation":
     st.title("Model Training & Evaluation")
+    stop_words = set(stopwords.words('english'))
+    lemmatizer = WordNetLemmatizer()
     def preprocess_text(text):
         if pd.isnull(text) or not isinstance(text, str):
             return ''
