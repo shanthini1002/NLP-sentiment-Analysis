@@ -79,7 +79,22 @@ elif option == "Data Preprocessing":
 # Visualization
 elif option == "Visualizations":
     st.title("Data Visualization")
-    
+    sns.countplot(x='rating', data=df,color="green")
+    plt.title('Distribution of Ratings')
+    st.pyplot(plt)
+
+    st.write("### Sentiment Distribution")
+    plt.figure(figsize=(8, 5))
+    sns.countplot(x=df['sentiment'], palette='viridis')
+    plt.xlabel("Sentiment")
+    plt.ylabel("Count")
+    plt.title("Sentiment Distribution")
+    st.pyplot(plt)
+
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(df,color="orange")  # Replace 'column_name' with a numerical column
+    plt.title("Boxplot to identify outliers")
+    st.pyplot(plt)
     
     text = ' '.join(df['verified_reviews'].dropna().astype(str))
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
@@ -89,13 +104,7 @@ elif option == "Visualizations":
     plt.axis('off')
     st.pyplot(plt)
     
-    st.write("### Sentiment Distribution")
-    plt.figure(figsize=(8, 5))
-    sns.countplot(x=df['sentiment'], palette='viridis')
-    plt.xlabel("Sentiment")
-    plt.ylabel("Count")
-    plt.title("Sentiment Distribution")
-    st.pyplot(plt)
+    
 
 # Model Training & Evaluation
 elif option == "Model Training & Evaluation":
