@@ -153,16 +153,16 @@ elif option == "Predict Sentiment":
     st.title("Predict Sentiment")
     user_input = st.text_area("Enter text to analyze sentiment:")
     if st.button("Analyze"):
-        stop_words = set(stopwords.words('english'))
-    lemmatizer = WordNetLemmatizer()
-    def preprocess_text(text):
-        if pd.isnull(text) or not isinstance(text, str):
+       stop_words = set(stopwords.words('english'))
+       lemmatizer = WordNetLemmatizer()
+       def preprocess_text(text):
+           if pd.isnull(text) or not isinstance(text, str):
             return ''
-        text = text.lower()
-        text = re.sub(r'[^a-z\s]', '', text)
-        words = text.split()
-        words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
-        return ' '.join(words)
+            text = text.lower()
+            text = re.sub(r'[^a-z\s]', '', text)
+            words = text.split()
+            words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
+            return ' '.join(words)
     
     df['cleaned_reviews'] = df['verified_reviews'].fillna('').apply(preprocess_text)
     vectorizer = TfidfVectorizer()
@@ -184,7 +184,7 @@ elif option == "Predict Sentiment":
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
         acc = accuracy_score(y_test, y_pred)
-        model = models["Logistic Regression"]  # Default model
+        model = models["Random Forest"]  # Default model
         prediction = model.predict(vectorizer.transform([user_input]))
         sentiment = "Positive" if prediction[0] == 1 else "Negative"
         st.write(f"Predicted Sentiment: {sentiment}")
