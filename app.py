@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -19,21 +20,25 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 # Download necessary NLTK data
 nltk.download('stopwords')
 nltk.download('wordnet')
+st.sidebar.title("Navigation")
+section = st.sidebar.radio("Go to", [
+    "Load Dataset", "EDA", "Data Preprocessing", "Visualizations", "Model Training & Evaluation","Predict Sentiment"])
+])
+
+st.title("Upload File")
+uploaded_file = st.file_uploader("Choose a file", type=["csv"])
+
+
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    df.columns = df.columns.str.strip() 
 
 # Load dataset
-def load_data():
-    df = pd.read_csv("/content/amazon_alexa.csv")
     df['date'] = pd.to_datetime(df['date'])
     df['sentiment'] = df['rating'].apply(lambda x: 1 if x >= 4 else 0)
-    return df
+    
 
-df = None
 
-# Sidebar Navigation
-st.sidebar.title("Sentiment Analysis App")
-option = st.sidebar.radio("Select Section:", ["Load Dataset", "EDA", "Data Preprocessing", "Visualizations", "Model Training & Evaluation","Predict Sentiment"])
-
-# Load Dataset Section
 if option == "Load Dataset":
     st.title("Load Dataset")
     df = load_data()
@@ -47,9 +52,9 @@ elif option == "EDA":
         df = load_data()
     st.write(df.head())
     st.write(df.describe())
-    st.write("### Sentiment Distribution")
-    st.bar_chart(df['sentiment'].value_counts())
-
+    st.write(df.info())
+    st.write(df.shape)
+    
 # Data Preprocessing
 elif option == "Data Preprocessing":
     st.title("Data Preprocessing")
@@ -76,6 +81,7 @@ elif option == "Visualizations":
     st.title("Data Visualization")
     if df is None:
         df = load_data()
+    
     text = ' '.join(df['verified_reviews'].dropna().astype(str))
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
     
