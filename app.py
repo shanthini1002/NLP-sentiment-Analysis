@@ -23,7 +23,6 @@ nltk.download('wordnet')
 st.sidebar.title("Navigation")
 section = st.sidebar.radio("Go to", [
     "Load Dataset", "EDA", "Data Preprocessing", "Visualizations", "Model Training & Evaluation","Predict Sentiment"])
-])
 
 st.title("Upload File")
 uploaded_file = st.file_uploader("Choose a file", type=["csv"])
