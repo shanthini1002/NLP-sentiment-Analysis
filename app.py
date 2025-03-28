@@ -47,11 +47,12 @@ if option == "Load Dataset":
 # EDA Section
 elif option == "EDA":
     st.title("Exploratory Data Analysis")
-    st.write(df.head())
-    st.write(df.describe())
-    st.write(df.info())
-    st.write(df.shape)
-    
+    st.write("### Data Info")
+    st.write(data.info())
+    st.write("### First 5 rows")
+    st.write(data.head())
+    st.write("### Checking for missing values")
+    st.write(data.isnull().sum())
 # Data Preprocessing
 elif option == "Data Preprocessing":
     st.title("Data Preprocessing")
@@ -125,7 +126,7 @@ elif option == "Model Training & Evaluation":
     plt.title('Comparison of Model Accuracies')
     st.pyplot(plt)
 # Sentiment Prediction
-elif section == "Predict Sentiment":
+elif option == "Predict Sentiment":
     st.title("Predict Sentiment")
     user_input = st.text_area("Enter text to analyze sentiment:")
     if st.button("Analyze"):
