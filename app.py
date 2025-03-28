@@ -40,7 +40,7 @@ if uploaded_file is not None:
 
 if option == "Load Dataset":
     st.title("Load Dataset")
-    df = load_data()
+    st.write(df)
     st.write("Dataset Loaded Successfully!")
     st.write(df.head())
 
