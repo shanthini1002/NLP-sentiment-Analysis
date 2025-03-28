@@ -153,6 +153,37 @@ elif option == "Predict Sentiment":
     st.title("Predict Sentiment")
     user_input = st.text_area("Enter text to analyze sentiment:")
     if st.button("Analyze"):
+        stop_words = set(stopwords.words('english'))
+    lemmatizer = WordNetLemmatizer()
+    def preprocess_text(text):
+        if pd.isnull(text) or not isinstance(text, str):
+            return ''
+        text = text.lower()
+        text = re.sub(r'[^a-z\s]', '', text)
+        words = text.split()
+        words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
+        return ' '.join(words)
+    
+    df['cleaned_reviews'] = df['verified_reviews'].fillna('').apply(preprocess_text)
+    vectorizer = TfidfVectorizer()
+    X = vectorizer.fit_transform(df['cleaned_reviews'])
+    y = df['sentiment']
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    models = {
+        "Naïve Bayes": MultinomialNB(),
+        "Logistic Regression": LogisticRegression(),
+        "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
+        "Gradient Boosting": GradientBoostingClassifier(n_estimators=100, random_state=42),
+        "SVM": SVC(kernel='linear')
+    }
+    
+    accuracies = {}
+    for name, model in models.items():
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        acc = accuracy_score(y_test, y_pred)
         model = models["Logistic Regression"]  # Default model
         prediction = model.predict(vectorizer.transform([user_input]))
         sentiment = "Positive" if prediction[0] == 1 else "Negative"
